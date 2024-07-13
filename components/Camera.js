@@ -1,11 +1,12 @@
-import React from 'react';
-import { useState } from 'react';
-import { Button, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import React, { useState } from 'react';
+import { Button, StyleSheet, Text, View } from 'react-native';
 import { CameraView, useCameraPermissions } from 'expo-camera';
+import Ultimate from './Ultimate'; // Import the Ultimate component
+import { useStatus } from './Status'; // Import useStatus hook
 
 const Camera = () => {
   const [permission, requestPermission] = useCameraPermissions();
-  const [isGrayscale, setIsGrayscale] = useState(false);
+  const { isGrayscale, toggleGrayscale } = useStatus();
 
   if (!permission) {
     // Camera permissions are still loading.
@@ -22,20 +23,14 @@ const Camera = () => {
     );
   }
 
-  const toggleGrayscale = () => {
-    setIsGrayscale(!isGrayscale);
-  };
-
   return (
     <View style={styles.container}>
-    <CameraView style={styles.camera} facing={'back'} ratio="16:9"/>
-    {isGrayscale && <View style={styles.grayscaleOverlay} />}
+      <CameraView style={styles.camera} facing={'back'} ratio="16:9" />
+      {isGrayscale && <View style={styles.grayscaleOverlay} />}
       <View style={styles.buttonContainer}>
-        <TouchableOpacity onPress={toggleGrayscale} style={styles.button}>
-          <Text style={styles.text}>{isGrayscale ? 'Remove Grayscale' : 'Apply Grayscale'}</Text>
-        </TouchableOpacity>
+        <Ultimate onPress={toggleGrayscale} grayscaleMode={isGrayscale} />
       </View>
-  </View>
+    </View>
   );
 };
 
@@ -58,16 +53,6 @@ const styles = StyleSheet.create({
     right: 0,
     flexDirection: 'row',
     justifyContent: 'center',
-  },
-  button: {
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    borderRadius: 5,
-    padding: 10,
-    alignItems: 'center',
-  },
-  text: {
-    fontSize: 18,
-    color: 'white',
   },
 });
 

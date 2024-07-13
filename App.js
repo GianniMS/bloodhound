@@ -1,13 +1,16 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import Camera from './components/Camera';
+import { StatusProvider } from './components/Status'; // Import StatusProvider
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Camera/>
-      <StatusBar style="auto" />
-    </View>
+    <StatusProvider>
+      <View style={styles.container}>
+        <Camera />
+        <StatusBar style="auto" />
+      </View>
+    </StatusProvider>
   );
 }
 
